@@ -1,0 +1,2 @@
+class ChordSymbolError(Exception):
+    pass
