@@ -4,4 +4,4 @@ Copyright (c) 2024, Matteo Pettenò
 License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
 """
 from . import note_sequence
-from .protobuf import *
+from . import protobuf
