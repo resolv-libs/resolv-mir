@@ -1,8 +1,8 @@
 """ This processor module contains functions used to split a NoteSequence proto in subsequences. """
 from typing import List, Union
 
-from modules.libs.mir.note_sequence import constants, processors, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import constants, processors, utilities
+from ...protobuf import NoteSequence
 
 
 def split_note_sequence(note_sequence: NoteSequence, hop_size_seconds: Union[float, List[float]],

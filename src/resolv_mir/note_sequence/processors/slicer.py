@@ -1,8 +1,8 @@
 """ This processor module contains functions used to slice a NoteSequence proto in subsequences. """
 from typing import List
 
-from modules.libs.mir.note_sequence import processors, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import processors, utilities
+from ...protobuf import NoteSequence
 
 
 def slice_note_sequence(note_sequence: NoteSequence, slice_size_seconds: float, hop_size_seconds: float,

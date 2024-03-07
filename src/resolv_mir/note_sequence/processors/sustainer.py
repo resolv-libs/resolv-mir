@@ -4,8 +4,8 @@ import copy
 import logging
 import operator
 
-from modules.libs.mir.note_sequence import exceptions, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import exceptions, utilities
+from ...protobuf import NoteSequence
 
 # Constants for processing the note/sustain stream.
 # The order here matters because we want to process 'on' events before we process 'off' events, and we want to process

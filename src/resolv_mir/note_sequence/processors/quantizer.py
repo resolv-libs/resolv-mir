@@ -2,8 +2,8 @@
 import copy
 import itertools
 
-from modules.libs.mir.note_sequence import constants, exceptions, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import constants, exceptions, utilities
+from ...protobuf import NoteSequence
 
 
 def quantize_note_sequence(note_sequence: NoteSequence, steps_per_quarter: int) -> NoteSequence:

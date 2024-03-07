@@ -1,6 +1,6 @@
 """ This processor module contains functions used to truncate a NoteSequence proto. """
-from modules.libs.mir.note_sequence import utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import utilities
+from ...protobuf import NoteSequence
 
 
 def truncate_quantized_sequence_at_step(note_sequence: NoteSequence, end_step: int):

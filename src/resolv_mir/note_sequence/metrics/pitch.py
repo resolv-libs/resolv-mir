@@ -3,9 +3,9 @@ from math import perm
 
 import numpy as np
 
-from modules.libs.mir.note_sequence import constants, processors, utilities
-from modules.libs.mir.note_sequence.metrics import common
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from . import common
+from .. import constants, processors, utilities
+from ...protobuf import NoteSequence
 
 
 def pitch_range(note_sequence: NoteSequence, num_midi_pitches: int = constants.NUM_PIANO_MIDI_PITCHES) -> float:

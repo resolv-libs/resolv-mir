@@ -1,6 +1,6 @@
 """ This processor module contains functions used to extend the duration of a NoteSequence proto. """
-from modules.libs.mir.note_sequence import utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from ..import utilities
+from ...protobuf import NoteSequence
 
 
 def extend_quantized_sequence_with_silence(note_sequence: NoteSequence):

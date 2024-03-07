@@ -1,8 +1,8 @@
 """ This module contains functions to compute metrics regarding the rhythmic of a NoteSequence proto. """
 import numpy as np
 
-from modules.libs.mir.note_sequence import constants, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import constants, utilities
+from ...protobuf import NoteSequence
 
 
 def toussaint(note_sequence: NoteSequence, bars: int = None, binary: bool = True) -> float:

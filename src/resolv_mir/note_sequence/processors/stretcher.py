@@ -1,8 +1,8 @@
 """ This processor module contains functions used to stretch a NoteSequence proto. """
 import itertools
 
-from modules.libs.mir.note_sequence import exceptions, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import exceptions, utilities
+from ...protobuf import NoteSequence
 
 
 def stretch_note_sequence(note_sequence: NoteSequence, stretch_factor: float, in_place: bool = False):

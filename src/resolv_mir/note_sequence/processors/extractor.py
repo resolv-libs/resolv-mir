@@ -5,8 +5,8 @@ from typing import List, Tuple, Dict, Any
 
 import numpy as np
 
-from modules.libs.mir.note_sequence import constants, exceptions, processors, statistics, utilities
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import constants, exceptions, processors, statistics, utilities
+from ...protobuf import NoteSequence
 
 
 def extract_melodies_from_note_sequence(quantized_sequence: NoteSequence,

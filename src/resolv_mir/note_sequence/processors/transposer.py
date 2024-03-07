@@ -1,8 +1,8 @@
 """ This processor module contains functions used to transpose a NoteSequence proto. """
 from typing import Tuple
 
-from modules.libs.mir.note_sequence import constants
-from modules.libs.mir.protobuf.protos.symbolic_music_pb2 import NoteSequence
+from .. import constants
+from ...protobuf import NoteSequence
 
 
 def transpose_note_sequence(note_sequence: NoteSequence,
