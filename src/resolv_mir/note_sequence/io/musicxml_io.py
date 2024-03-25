@@ -1,10 +1,12 @@
 """Simple MusicXML parser used to convert MusicXML into NoteSequence proto."""
-import io
 import fractions
+import io
 import xml.etree.ElementTree as ET
 import zipfile
+from typing import Dict, Any
 
 from resolv_mir.note_sequence import constants, exceptions
+from resolv_mir.note_sequence.io.utilities import populate_sequence_metadata
 from resolv_mir.protobuf import NoteSequence
 
 Fraction = fractions.Fraction
@@ -1252,20 +1254,21 @@ class Tempo(object):
         return tempo_str
 
 
-def musicxml_to_note_sequence(musicxml_file: bytes, source_type: str = 'mxml'):
-    """Convert MusicXML file contents to a NoteSequence proto.
+def musicxml_to_note_sequence(musicxml_file: bytes, source_type: str = 'mxml', metadata: Dict[str, Any] = None):
+    """ Convert MusicXML file contents to a NoteSequence proto.
 
     Converts a MusicXML file encoded as a string into a NoteSequence proto.
 
     Args:
-      musicxml_file: A string path to a MusicXML file or its content (bytes).
-      source_type: The type of the MusicXML file (mxml or mxl).
+        musicxml_file: A string path to a MusicXML file or its content (bytes).
+        source_type: The type of the MusicXML file (mxml or mxl).
+        metadata (Dict[str, Any]): A dictionary containing metadata relative to the MXML file (title, release, ecc...).
 
     Returns:
-      A NoteSequence proto.
+        A NoteSequence proto.
 
     Raises:
-      MusicXMLConversionError: An error occurred when parsing the MusicXML file.
+        MusicXMLConversionError: An error occurred when parsing the MusicXML file.
     """
     try:
         musicxml_document = MusicXMLDocument(musicxml_file, source_type == ".mxl")
@@ -1347,20 +1350,22 @@ def musicxml_to_note_sequence(musicxml_file: bytes, source_type: str = 'mxml'):
         text_annotation.text = musicxml_chord_symbol.get_figure_string()
         text_annotation.annotation_type = NoteSequence.TextAnnotation.CHORD_SYMBOL
 
+    sequence = populate_sequence_metadata(sequence, source_type, metadata)
+
     return sequence
 
 
 def musicxml_file_to_note_sequence(musicxml_file_path: str):
-    """Converts a MusicXML file to a NoteSequence proto.
+    """ Converts a MusicXML file to a NoteSequence proto.
 
     Args:
-      musicxml_file_path: A string path to a MusicXML file.
+        musicxml_file_path: A string path to a MusicXML file.
 
     Returns:
-      A NoteSequence proto.
+        A NoteSequence proto.
 
     Raises:
-      MusicXMLConversionError: Invalid musicxml_file.
+        MusicXMLConversionError: Invalid musicxml_file.
     """
 
     try:

@@ -7,9 +7,10 @@ from typing import Dict, Union, Any
 
 import pretty_midi
 
+from .utilities import populate_sequence_metadata
 from .. import constants
 from ..exceptions import MIDIConversionError
-from resolv_mir.protobuf import NoteSequence, SequenceMetadata
+from resolv_mir.protobuf import NoteSequence
 
 # Allow pretty_midi to read MIDI files with absurdly high tick rates.
 # Useful for reading the MAPS dataset.
@@ -147,20 +148,7 @@ def midi_to_note_sequence(midi_data: Union[pretty_midi.PrettyMIDI, bytes], metad
 
     # TODO - MIDI conversion: Estimate note type (e.g. quarter note) and populate note.numerator and note.denominator.
 
-    if metadata:
-        dict_metadata = collections.defaultdict(lambda: "")
-        dict_metadata.update(metadata)
-        sequence.id = dict_metadata['id']
-        sequence.filepath = dict_metadata['filepath']
-        sequence.collection_name = dict_metadata['collection_name']
-        sequence.reference_number = dict_metadata['reference_number'] if dict_metadata['reference_number'] else 0
-        sequence_metadata = SequenceMetadata(
-            title=dict_metadata['title'],
-            artist=dict_metadata['artist'],
-            genre=dict_metadata['genre']
-        )
-        sequence_metadata.composers.append(dict_metadata['composer'])
-        sequence.sequence_metadata.CopyFrom(sequence_metadata)
+    sequence = populate_sequence_metadata(sequence, 'midi', metadata)
 
     return sequence
 
