@@ -89,6 +89,8 @@ def extract_melodies_from_note_sequence(quantized_sequence: NoteSequence,
         )
         return s
 
+    if min_pitch > max_pitch:
+        raise ValueError('min_pitch should be <= max_pitch')
     utilities.assert_is_relative_quantized_sequence(quantized_sequence)
 
     melodies: List[NoteSequence] = []
@@ -204,6 +206,8 @@ def extract_melody_from_note_sequence(quantized_sequence: NoteSequence,
         new_note.quantized_end_step = end_s
         target_melody.notes.append(new_note)
 
+    if min_pitch > max_pitch:
+        raise ValueError('min_pitch should be <= max_pitch')
     utilities.assert_is_relative_quantized_sequence(quantized_sequence)
 
     steps_per_bar_float = utilities.steps_per_bar_in_quantized_sequence(quantized_sequence)

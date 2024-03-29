@@ -2,6 +2,7 @@
 from typing import Tuple
 
 from .. import constants
+from ..chord_symbols import transposer as chord_transposer
 from ...protobuf import NoteSequence
 
 
@@ -10,8 +11,9 @@ def transpose_note_sequence(note_sequence: NoteSequence,
                             min_allowed_pitch: int = constants.MIN_MIDI_PITCH,
                             max_allowed_pitch: int = constants.MAX_MIDI_PITCH,
                             transpose_chords: bool = True,
-                            in_place: bool = False) -> Tuple[NoteSequence, int]:
-    """ Transposes note sequence specified amount, deleting out-of-bound notes.
+                            in_place: bool = False,
+                            delete_notes: bool = True) -> Tuple[NoteSequence, int]:
+    """ Transposes note sequence specified amount.
 
     Args:
         note_sequence (NoteSequence): The NoteSequence proto to be transposed.
@@ -22,7 +24,10 @@ def transpose_note_sequence(note_sequence: NoteSequence,
             be deleted.
         transpose_chords (int): If True, also transpose chord symbol text annotations. If False, chord symbols will be
             removed.
-        in_place (int): If True, the input note_sequence is edited directly.
+        in_place (bool): If True, the input note_sequence is edited directly.
+        delete_notes (bool): if True, out-of-bound notes will be deleted, else the transposed note will be transposed
+            again up or down by octaves until it lays inside the desired bounds. Note: if the specified bound doesn't
+            contain the transposed note (in any octave) it will be deleted anyway.
 
     Returns:
       (Tuple[NoteSequence, int]): The transposed NoteSequence and a count of how many notes were deleted.
@@ -30,6 +35,18 @@ def transpose_note_sequence(note_sequence: NoteSequence,
     Raises:
       ChordSymbolError: If a chord symbol is unable to be transposed.
     """
+    def transpose_note_pitch(n: NoteSequence.Note):
+        new_pitch = n.pitch + amount
+        if not delete_notes:
+            while new_pitch > max_allowed_pitch:
+                new_pitch -= constants.NOTES_PER_OCTAVE
+            while new_pitch < min_allowed_pitch:
+                new_pitch += constants.NOTES_PER_OCTAVE
+        return new_pitch
+
+    if min_allowed_pitch > max_allowed_pitch:
+        raise ValueError('min_allowed_pitch should be <= max_allowed_pitch')
+
     if not in_place:
         new_ns = NoteSequence()
         new_ns.CopyFrom(note_sequence)
@@ -38,20 +55,21 @@ def transpose_note_sequence(note_sequence: NoteSequence,
     new_note_list = []
     deleted_note_count = 0
     end_time = 0
-
     for note in note_sequence.notes:
-        new_pitch = note.pitch + amount
-        if (min_allowed_pitch <= new_pitch <= max_allowed_pitch) or note.is_drum:
+        if note.is_drum:
             end_time = max(end_time, note.end_time)
-
-            if not note.is_drum:
-                note.pitch += amount
-                # The pitch name, if present, will no longer be valid.
-                note.pitch_name = NoteSequence.UNKNOWN_PITCH_NAME
-
             new_note_list.append(note)
         else:
-            deleted_note_count += 1
+            transposed_pitch = transpose_note_pitch(note)
+            if min_allowed_pitch <= transposed_pitch <= max_allowed_pitch:
+                end_time = max(end_time, note.end_time)
+                note.pitch = transposed_pitch
+                # The pitch name, if present, will no longer be valid.
+                # TODO - populate the correct transposed pitch name (also according to key)
+                note.pitch_name = NoteSequence.UNKNOWN_PITCH_NAME
+                new_note_list.append(note)
+            else:
+                deleted_note_count += 1
 
     if deleted_note_count > 0:
         del note_sequence.notes[:]
@@ -65,7 +83,7 @@ def transpose_note_sequence(note_sequence: NoteSequence,
         # ChordSymbolError if a chord symbol cannot be interpreted.
         for ta in note_sequence.text_annotations:
             if ta.annotation_type == NoteSequence.TextAnnotation.CHORD_SYMBOL and ta.text != constants.NO_CHORD:
-                ta.text = modules.libs.mir.note_sequence.chord_symbols.transposer.transpose_chord_symbol(ta.text, amount)
+                ta.text = chord_transposer.transpose_chord_symbol(ta.text, amount)
     else:
         # Remove chord symbol text annotations.
         text_annotations_to_keep = []
@@ -78,6 +96,16 @@ def transpose_note_sequence(note_sequence: NoteSequence,
 
     # Also transpose key signatures.
     for ks in note_sequence.key_signatures:
-        ks.key = (ks.key + amount) % 12
+        ks.key = (ks.key + amount) % constants.NOTES_PER_OCTAVE
 
     return note_sequence, deleted_note_count
+
+
+def transpose_note_sequence_to_key(note_sequence: NoteSequence,
+                                   key: NoteSequence.KeySignature.Key,
+                                   transpose_chords: bool = True,
+                                   in_place: bool = False) -> Tuple[NoteSequence, int]:
+    if key is None:
+        return note_sequence
+    # TODO - Transpose to key implementation
+    return note_sequence

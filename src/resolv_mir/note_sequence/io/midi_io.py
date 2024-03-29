@@ -316,4 +316,5 @@ def note_sequence_to_midi_file(note_sequence: NoteSequence, output_file: Union[s
     """
     pretty_midi_object = note_sequence_to_midi(note_sequence, drop_events_n_seconds_after_last_note)
     Path(output_file).parent.mkdir(parents=True, exist_ok=True)
-    pretty_midi_object.write(open(output_file, 'wb'))
+    with open(output_file, "wb") as file:
+        pretty_midi_object.write(file)

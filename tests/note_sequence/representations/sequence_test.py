@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 from resolv_mir.note_sequence import processors, representations
 from resolv_mir.note_sequence.io import midi_io
@@ -7,8 +8,8 @@ from resolv_mir.note_sequence.io import midi_io
 class PitchSequenceTest(unittest.TestCase):
 
     @property
-    def test_file_path(self):
-        return "../../data/4bar_monophonic_melody.mid"
+    def test_file_path(self) -> Path:
+        return Path("./data/4bar_monophonic_melody.mid")
 
     def test_to_pitch_sequence(self):
         pitch_seq_repr = [80, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 78, 76, 128, 129,
