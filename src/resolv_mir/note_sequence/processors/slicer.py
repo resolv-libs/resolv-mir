@@ -106,4 +106,4 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence,
     sliced_without_short = [sliced_sequence for sliced_sequence in sliced_sequences
                             if sliced_sequence.total_quantized_steps == total_bars_steps]
     shorter_seqs_count = len(sliced_sequences) - len(sliced_without_short)
-    return sliced_sequences, shorter_seqs_count if keep_shorter_slices else sliced_without_short, shorter_seqs_count
+    return (sliced_sequences, shorter_seqs_count) if keep_shorter_slices else (sliced_without_short, shorter_seqs_count)
