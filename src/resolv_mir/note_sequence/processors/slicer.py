@@ -5,8 +5,11 @@ from .. import processors, utilities
 from ...protobuf import NoteSequence
 
 
-def slice_note_sequence(note_sequence: NoteSequence, slice_size_seconds: float, hop_size_seconds: float,
-                        start_time: float = 0, skip_splits_inside_notes: bool = False,
+def slice_note_sequence(note_sequence: NoteSequence,
+                        slice_size_seconds: float,
+                        hop_size_seconds: float,
+                        start_time: float = 0,
+                        skip_splits_inside_notes: bool = False,
                         allow_cropped_slices: bool = False) -> List[NoteSequence]:
     """ Slice a NoteSequence into smaller subsequences of a fixed duration.
 
@@ -62,9 +65,13 @@ def slice_note_sequence(note_sequence: NoteSequence, slice_size_seconds: float, 
     return processors.extractor.extract_subsequences(note_sequence, slices_times)
 
 
-def slice_note_sequence_in_bars(note_sequence: NoteSequence, slice_size_bars: int, hop_size_bars: int,
-                                start_time: float = 0, skip_splits_inside_notes: bool = False,
-                                allow_cropped_slices: bool = False) -> List[NoteSequence]:
+def slice_note_sequence_in_bars(note_sequence: NoteSequence,
+                                slice_size_bars: int,
+                                hop_size_bars: int,
+                                start_time: float = 0,
+                                skip_splits_inside_notes: bool = False,
+                                allow_cropped_slices: bool = False,
+                                keep_shorter_slices: bool = True) -> List[NoteSequence]:
     """ Slices a NoteSequence into subsequences of specified length in bars with a specified hop size.
 
     This function slices a given NoteSequence into subsequences of a fixed duration specified in bars, with a specified
@@ -80,6 +87,8 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence, slice_size_bars: in
             Defaults to False.
         allow_cropped_slices (bool, optional): If True, allows slices that exceed the total time of the sequence to
             be cropped to fit within the sequence duration. If False, such slices are discarded. Defaults to False.
+        keep_shorter_slices (bool, optional): If True, keeps the slices that are shorter than slice_size_bars because
+            they end with silence. If False, such slices are discarded. Defaults to True.
 
     Returns:
         List[NoteSequence]: A list of NoteSequence objects representing the sliced subsequences.
@@ -90,5 +99,10 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence, slice_size_bars: in
     utilities.assert_is_relative_quantized_sequence(note_sequence)
     slice_size_seconds = utilities.bars_length_in_quantized_sequence(note_sequence, slice_size_bars)
     hop_size_seconds = utilities.bars_length_in_quantized_sequence(note_sequence, hop_size_bars)
-    return slice_note_sequence(note_sequence, slice_size_seconds, hop_size_seconds, start_time,
-                               skip_splits_inside_notes, allow_cropped_slices)
+    sliced_bars = slice_note_sequence(note_sequence, slice_size_seconds, hop_size_seconds, start_time,
+                                      skip_splits_inside_notes, allow_cropped_slices)
+    if keep_shorter_slices:
+        return sliced_bars
+    else:
+        total_bars_steps = utilities.steps_per_bar_in_quantized_sequence(note_sequence) * slice_size_bars
+        return [sliced_bar for sliced_bar in sliced_bars if sliced_bar.total_quantized_steps == total_bars_steps]
