@@ -1,5 +1,5 @@
 """ This processor module contains functions used to slice a NoteSequence proto in subsequences. """
-from typing import List
+from typing import List, Tuple
 
 from .. import processors, utilities
 from ...protobuf import NoteSequence
@@ -71,7 +71,7 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence,
                                 start_time: float = 0,
                                 skip_splits_inside_notes: bool = False,
                                 allow_cropped_slices: bool = False,
-                                keep_shorter_slices: bool = True) -> List[NoteSequence]:
+                                keep_shorter_slices: bool = True) -> Tuple[List[NoteSequence], int]:
     """ Slices a NoteSequence into subsequences of specified length in bars with a specified hop size.
 
     This function slices a given NoteSequence into subsequences of a fixed duration specified in bars, with a specified
@@ -91,7 +91,8 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence,
             they end with silence. If False, such slices are discarded. Defaults to True.
 
     Returns:
-        List[NoteSequence]: A list of NoteSequence objects representing the sliced subsequences.
+        Tuple[List[NoteSequence], int]: A tuple containing the list of NoteSequence objects representing the sliced
+            subsequences and a count of how many shorter sequences there are.
 
     Raises:
         QuantizationStatusError: If note_sequence is not quantized relative to tempo.
@@ -99,10 +100,10 @@ def slice_note_sequence_in_bars(note_sequence: NoteSequence,
     utilities.assert_is_relative_quantized_sequence(note_sequence)
     slice_size_seconds = utilities.bars_length_in_quantized_sequence(note_sequence, slice_size_bars)
     hop_size_seconds = utilities.bars_length_in_quantized_sequence(note_sequence, hop_size_bars)
-    sliced_bars = slice_note_sequence(note_sequence, slice_size_seconds, hop_size_seconds, start_time,
-                                      skip_splits_inside_notes, allow_cropped_slices)
-    if keep_shorter_slices:
-        return sliced_bars
-    else:
-        total_bars_steps = utilities.steps_per_bar_in_quantized_sequence(note_sequence) * slice_size_bars
-        return [sliced_bar for sliced_bar in sliced_bars if sliced_bar.total_quantized_steps == total_bars_steps]
+    sliced_sequences = slice_note_sequence(note_sequence, slice_size_seconds, hop_size_seconds, start_time,
+                                           skip_splits_inside_notes, allow_cropped_slices)
+    total_bars_steps = utilities.steps_per_bar_in_quantized_sequence(note_sequence) * slice_size_bars
+    sliced_without_short = [sliced_sequence for sliced_sequence in sliced_sequences
+                            if sliced_sequence.total_quantized_steps == total_bars_steps]
+    shorter_seqs_count = len(sliced_sequences) - len(sliced_without_short)
+    return sliced_sequences, shorter_seqs_count if keep_shorter_slices else sliced_without_short, shorter_seqs_count
