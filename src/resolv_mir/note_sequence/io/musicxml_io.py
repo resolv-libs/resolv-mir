@@ -19,7 +19,7 @@ class MusicXMLParserState(object):
 
     def __init__(self):
         # Default to one division per measure
-        # From the MusicXML documentation: "The divisions element indicates
+        # From the MusicXML documentation: "The division element indicates
         # how many divisions per quarter note are used to indicate a note's
         # duration. For example, if duration = 1 and divisions = 2,
         # this is an eighth note duration."
@@ -29,7 +29,7 @@ class MusicXMLParserState(object):
         # MusicXML calls this tempo, but Magenta calls this qpm
         # Therefore, the variable is called qpm, but reads the
         # MusicXML tempo attribute
-        # (120 qpm is the default tempo according to the
+        # (120 qpm is the default tempo, according to the
         # Standard MIDI Files 1.0 Specification)
         self.qpm = constants.DEFAULT_QUARTERS_PER_MINUTE
 
@@ -1271,7 +1271,7 @@ def musicxml_to_note_sequence(musicxml_file: bytes, source_type: str = 'mxml', m
         MusicXMLConversionError: An error occurred when parsing the MusicXML file.
     """
     try:
-        musicxml_document = MusicXMLDocument(musicxml_file, source_type == ".mxl")
+        musicxml_document = MusicXMLDocument(musicxml_file, source_type == "mxl")
     except exceptions.MusicXMLParseError as e:
         raise exceptions.MusicXMLConversionError(e)
 
