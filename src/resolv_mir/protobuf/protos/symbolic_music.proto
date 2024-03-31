@@ -101,7 +101,7 @@ message NoteSequence {
   repeated InstrumentInfo instrument_infos = 23;
 
   // Sequence metrics.
-  SequenceMetrics metrics = 22;
+  SequenceAttributes attributes = 22;
 
   // Next tag: 15
   message Note {
@@ -418,8 +418,8 @@ message NoteSequence {
     int32 num_times = 2;
   }
 
-  // Stores metrics relative to the sequence
-  message SequenceMetrics {
+  // Stores attributes relative to the sequence
+  message SequenceAttributes {
     double toussaint = 1;
     double note_density = 2;
     double pitch_range = 3;

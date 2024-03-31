@@ -7,7 +7,7 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class NoteSequence(_message.Message):
-    __slots__ = ("id", "filepath", "reference_number", "collection_name", "ticks_per_quarter", "time_signatures", "key_signatures", "tempos", "notes", "total_time", "total_quantized_steps", "pitch_bends", "control_changes", "part_infos", "source_info", "text_annotations", "section_annotations", "section_groups", "quantization_info", "subsequence_info", "sequence_metadata", "instrument_infos", "metrics")
+    __slots__ = ("id", "filepath", "reference_number", "collection_name", "ticks_per_quarter", "time_signatures", "key_signatures", "tempos", "notes", "total_time", "total_quantized_steps", "pitch_bends", "control_changes", "part_infos", "source_info", "text_annotations", "section_annotations", "section_groups", "quantization_info", "subsequence_info", "sequence_metadata", "instrument_infos", "attributes")
     class PitchName(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         UNKNOWN_PITCH_NAME: _ClassVar[NoteSequence.PitchName]
@@ -335,7 +335,7 @@ class NoteSequence(_message.Message):
         sections: _containers.RepeatedCompositeFieldContainer[NoteSequence.Section]
         num_times: int
         def __init__(self, sections: _Optional[_Iterable[_Union[NoteSequence.Section, _Mapping]]] = ..., num_times: _Optional[int] = ...) -> None: ...
-    class SequenceMetrics(_message.Message):
+    class SequenceAttributes(_message.Message):
         __slots__ = ("toussaint", "note_density", "pitch_range", "contour", "unique_notes_ratio", "unique_bigrams_ratio", "unique_trigrams_ratio", "dynamic_range", "note_change_ratio", "ratio_note_off_steps", "ratio_hold_note_steps", "repetitive_section_ratio", "len_longest_rep_section")
         TOUSSAINT_FIELD_NUMBER: _ClassVar[int]
         NOTE_DENSITY_FIELD_NUMBER: _ClassVar[int]
@@ -386,7 +386,7 @@ class NoteSequence(_message.Message):
     SUBSEQUENCE_INFO_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_METADATA_FIELD_NUMBER: _ClassVar[int]
     INSTRUMENT_INFOS_FIELD_NUMBER: _ClassVar[int]
-    METRICS_FIELD_NUMBER: _ClassVar[int]
+    ATTRIBUTES_FIELD_NUMBER: _ClassVar[int]
     id: str
     filepath: str
     reference_number: int
@@ -409,8 +409,8 @@ class NoteSequence(_message.Message):
     subsequence_info: NoteSequence.SubsequenceInfo
     sequence_metadata: SequenceMetadata
     instrument_infos: _containers.RepeatedCompositeFieldContainer[NoteSequence.InstrumentInfo]
-    metrics: NoteSequence.SequenceMetrics
-    def __init__(self, id: _Optional[str] = ..., filepath: _Optional[str] = ..., reference_number: _Optional[int] = ..., collection_name: _Optional[str] = ..., ticks_per_quarter: _Optional[int] = ..., time_signatures: _Optional[_Iterable[_Union[NoteSequence.TimeSignature, _Mapping]]] = ..., key_signatures: _Optional[_Iterable[_Union[NoteSequence.KeySignature, _Mapping]]] = ..., tempos: _Optional[_Iterable[_Union[NoteSequence.Tempo, _Mapping]]] = ..., notes: _Optional[_Iterable[_Union[NoteSequence.Note, _Mapping]]] = ..., total_time: _Optional[float] = ..., total_quantized_steps: _Optional[int] = ..., pitch_bends: _Optional[_Iterable[_Union[NoteSequence.PitchBend, _Mapping]]] = ..., control_changes: _Optional[_Iterable[_Union[NoteSequence.ControlChange, _Mapping]]] = ..., part_infos: _Optional[_Iterable[_Union[NoteSequence.PartInfo, _Mapping]]] = ..., source_info: _Optional[_Union[NoteSequence.SourceInfo, _Mapping]] = ..., text_annotations: _Optional[_Iterable[_Union[NoteSequence.TextAnnotation, _Mapping]]] = ..., section_annotations: _Optional[_Iterable[_Union[NoteSequence.SectionAnnotation, _Mapping]]] = ..., section_groups: _Optional[_Iterable[_Union[NoteSequence.SectionGroup, _Mapping]]] = ..., quantization_info: _Optional[_Union[NoteSequence.QuantizationInfo, _Mapping]] = ..., subsequence_info: _Optional[_Union[NoteSequence.SubsequenceInfo, _Mapping]] = ..., sequence_metadata: _Optional[_Union[SequenceMetadata, _Mapping]] = ..., instrument_infos: _Optional[_Iterable[_Union[NoteSequence.InstrumentInfo, _Mapping]]] = ..., metrics: _Optional[_Union[NoteSequence.SequenceMetrics, _Mapping]] = ...) -> None: ...
+    attributes: NoteSequence.SequenceAttributes
+    def __init__(self, id: _Optional[str] = ..., filepath: _Optional[str] = ..., reference_number: _Optional[int] = ..., collection_name: _Optional[str] = ..., ticks_per_quarter: _Optional[int] = ..., time_signatures: _Optional[_Iterable[_Union[NoteSequence.TimeSignature, _Mapping]]] = ..., key_signatures: _Optional[_Iterable[_Union[NoteSequence.KeySignature, _Mapping]]] = ..., tempos: _Optional[_Iterable[_Union[NoteSequence.Tempo, _Mapping]]] = ..., notes: _Optional[_Iterable[_Union[NoteSequence.Note, _Mapping]]] = ..., total_time: _Optional[float] = ..., total_quantized_steps: _Optional[int] = ..., pitch_bends: _Optional[_Iterable[_Union[NoteSequence.PitchBend, _Mapping]]] = ..., control_changes: _Optional[_Iterable[_Union[NoteSequence.ControlChange, _Mapping]]] = ..., part_infos: _Optional[_Iterable[_Union[NoteSequence.PartInfo, _Mapping]]] = ..., source_info: _Optional[_Union[NoteSequence.SourceInfo, _Mapping]] = ..., text_annotations: _Optional[_Iterable[_Union[NoteSequence.TextAnnotation, _Mapping]]] = ..., section_annotations: _Optional[_Iterable[_Union[NoteSequence.SectionAnnotation, _Mapping]]] = ..., section_groups: _Optional[_Iterable[_Union[NoteSequence.SectionGroup, _Mapping]]] = ..., quantization_info: _Optional[_Union[NoteSequence.QuantizationInfo, _Mapping]] = ..., subsequence_info: _Optional[_Union[NoteSequence.SubsequenceInfo, _Mapping]] = ..., sequence_metadata: _Optional[_Union[SequenceMetadata, _Mapping]] = ..., instrument_infos: _Optional[_Iterable[_Union[NoteSequence.InstrumentInfo, _Mapping]]] = ..., attributes: _Optional[_Union[NoteSequence.SequenceAttributes, _Mapping]] = ...) -> None: ...
 
 class SequenceMetadata(_message.Message):
     __slots__ = ("title", "artist", "genre", "composers")
