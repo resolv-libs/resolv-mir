@@ -35,9 +35,9 @@ packages = [
 include = ["CHANGELOG.md"]
 
 [tool.poetry.dependencies]
-python = ">=3.9"
+python = "^3.9"
 numpy = "*"
-pretty_midi = ">=0.2.10"
+pretty_midi = "^0.2.10"
 protobuf = "^5.26.1"
 
 [tool.poetry.group.dev.dependencies]
