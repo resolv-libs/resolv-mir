@@ -1,12 +1,12 @@
-""" This module provides common operations used by the other modules to compute the metrics. """
+""" This module provides common operations used by the other modules to compute the attributes. """
 from typing import Union
 
 from .. import utilities
 from resolv_mir.protobuf import NoteSequence
 
 
-def get_metric_normalization_factor(note_sequence: NoteSequence) -> Union[int, float]:
-    """ Get the normalization factor for metric evaluation.
+def get_attribute_normalization_factor(note_sequence: NoteSequence) -> Union[int, float]:
+    """ Get the normalization factor for attribute evaluation.
 
     This function calculates the normalization factor based on the total quantized steps if the input NoteSequence
     is quantized, otherwise, it uses the total time.

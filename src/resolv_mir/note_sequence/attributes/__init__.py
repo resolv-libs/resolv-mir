@@ -1,6 +1,6 @@
 """
 Author: Matteo Pettenò.
-Package Name: metrics.
+Package Name: attributes.
 Description: Package providing functions to compute metrics relative to a NoteSequence proto.
 Copyright (c) 2024, Matteo Pettenò
 License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)

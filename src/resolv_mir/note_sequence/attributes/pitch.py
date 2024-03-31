@@ -1,4 +1,4 @@
-""" This module contains functions to compute metrics regarding the pitch of a NoteSequence proto. """
+""" This module contains functions to compute attributes regarding the pitch of a NoteSequence proto. """
 from math import perm
 
 import numpy as np
@@ -62,7 +62,7 @@ def ratio_unique_notes(note_sequence: NoteSequence, num_midi_pitches: int = cons
         (float): The ratio of unique notes in the NoteSequence.
     """
     unique_notes = utilities.get_unique_notes(note_sequence)
-    normalization_factor = common.get_metric_normalization_factor(note_sequence) * num_midi_pitches
+    normalization_factor = common.get_attribute_normalization_factor(note_sequence) * num_midi_pitches
     return len(unique_notes) / normalization_factor
 
 
@@ -83,6 +83,6 @@ def ratio_unique_ngrams(note_sequence: NoteSequence, n: int = 2,
     """
     note_sequence_ngrams = processors.extractor.extract_ngrams_from_note_sequence(note_sequence, n)
     unique_ngrams = utilities.get_unique_note_sequences(note_sequence_ngrams)
-    normalization_factor = common.get_metric_normalization_factor(note_sequence)
+    normalization_factor = common.get_attribute_normalization_factor(note_sequence)
     max_number_unique_ngrams = perm(num_midi_pitches, n)
     return len(unique_ngrams) / normalization_factor

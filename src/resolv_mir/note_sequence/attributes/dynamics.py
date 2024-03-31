@@ -1,4 +1,4 @@
-""" This module contains functions to compute metrics regarding the dynamic of a NoteSequence proto. """
+""" This module contains functions to compute attributes regarding the dynamic of a NoteSequence proto. """
 from math import floor
 from typing import List
 
@@ -39,7 +39,7 @@ def length_longest_repetitive_section(note_sequence: NoteSequence, min_repetitio
             or 0.0 if no repetitive sections are found.
     """
     repetitive_subsequences = processors.extractor.extract_repetitive_subsequences(note_sequence, min_repetitions)
-    normalization_factor = common.get_metric_normalization_factor(note_sequence)
+    normalization_factor = common.get_attribute_normalization_factor(note_sequence)
     return max([len(ns.notes) for ns in repetitive_subsequences]) / normalization_factor if repetitive_subsequences \
         else 0.0
 
@@ -61,7 +61,7 @@ def ratio_note_change(note_sequence: NoteSequence) -> float:
         if previous_note and not utilities.equal_notes(previous_note, note):
             change_count += 1
         previous_note = note
-    normalization_factor = common.get_metric_normalization_factor(note_sequence)
+    normalization_factor = common.get_attribute_normalization_factor(note_sequence)
     return change_count / normalization_factor
 
 
@@ -79,7 +79,7 @@ def ratio_repetitive_sections(note_sequence: NoteSequence, min_repetitions: int 
         (float): The ratio of the number of repetitive sections to the total duration of the sequence.
     """
     repetitive_subsequences = processors.extractor.extract_repetitive_subsequences(note_sequence, min_repetitions)
-    normalization_factor = floor(common.get_metric_normalization_factor(note_sequence) / min_repetitions)
+    normalization_factor = floor(common.get_attribute_normalization_factor(note_sequence) / min_repetitions)
     return len(repetitive_subsequences) / normalization_factor if repetitive_subsequences else 0.0
 
 

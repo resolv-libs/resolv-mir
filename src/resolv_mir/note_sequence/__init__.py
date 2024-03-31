@@ -9,7 +9,7 @@ License: Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
 from . import constants
 from . import exceptions
 from . import io
-from . import metrics
+from . import attributes
 from . import processors
 from . import representations
 from . import statistics

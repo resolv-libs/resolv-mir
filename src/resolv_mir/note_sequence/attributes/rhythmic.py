@@ -1,4 +1,4 @@
-""" This module contains functions to compute metrics regarding the rhythmic of a NoteSequence proto. """
+""" This module contains functions to compute attributes regarding the rhythmic of a NoteSequence proto. """
 import numpy as np
 
 from .. import constants, utilities
