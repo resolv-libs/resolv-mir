@@ -36,9 +36,9 @@ include = ["CHANGELOG.md"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-numpy = "*"
+numpy = "^1.26.4"
 pretty_midi = "^0.2.10"
-protobuf = "^5.26.1"
+protobuf = "4.25.3"
 
 [tool.poetry.group.dev.dependencies]
 
