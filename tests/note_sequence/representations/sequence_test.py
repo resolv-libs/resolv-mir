@@ -22,8 +22,6 @@ class PitchSequenceTest(unittest.TestCase):
                           71, 128, 128, 128, 79, 128]
         note_sequence = midi_io.midi_file_to_note_sequence(self.test_file_path)
         qns_note_sequence = processors.quantizer.quantize_note_sequence(note_sequence, steps_per_quarter=4)
-        print(qns_note_sequence.notes[0])
-        print(qns_note_sequence.notes[1])
         test_pitch_seq_repr = representations.pitch_sequence_representation(qns_note_sequence)
         self.assertEqual(pitch_seq_repr, test_pitch_seq_repr)
 
