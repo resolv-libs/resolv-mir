@@ -32,5 +32,5 @@ ATTRIBUTE_FN_MAP = {
     'ratio_note_off_steps': dynamics.ratio_note_off_steps,
     'ratio_hold_note_steps': dynamics.ratio_hold_note_steps,
     'repetitive_section_ratio': dynamics.ratio_repetitive_sections,
-    'longest_repetitive_section': dynamics.length_longest_repetitive_section
+    'len_longest_rep_section': dynamics.length_longest_repetitive_section
 }
